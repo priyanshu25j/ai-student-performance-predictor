@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Student Performance Predictor</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f4f7;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            width: 450px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .result {
+            margin-top: 25px;
+            padding: 15px;
+            text-align: center;
+            background: #e8f5e9;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .result p {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .result h3 {
+            margin-top: 10px;
+        }
+
+        .reset-button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background: #6c757d;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+    .reset-button:hover {
+    background: #545b62;
+     }
+        .input-summary{
+           margin-top: 20px;
+           padding: 15px;
+           background:hsl(212, 54%, 93%);
+           border-radius: 8px;
+        }
+        .input-summary h3 {
+           margin-top: 0;
+        }
+
+        .input-summary p {
+          font-size: 16px;
+          margin: 8px 0;
+        }
+
+        .model-info, .model-details{
+          margin-top: 20px;
+          padding: 15px;
+          background: #f8f9fa;
+          border-radius: 8px;
+         }
+
+.model-info h3, .model-details h3{
+    margin-top: 0;
+}
+
+.model-info p, .model-details p {
+    font-size: 15px;
+    margin: 8px 0;
+}
+.model-comparison {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.model-comparison h3 {
+    margin-top: 0;
+}
+
+.model-comparison p {
+    font-size: 15px;
+    margin: 8px 0;
+}
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🎓 AI Student Predictor</h1>
+
+    <form method="POST">
+
+        <label>Study Hours per Day</label>
+        <input type="number" name="study_hours"
+               step="0.1" min="0" max = "16" required>
+
+        <label>Attendance (%)</label>
+        <input type="number" name="attendance"
+               step="0.1" min="0" max="100" required>
+
+        <label>Previous Marks</label>
+        <input type="number" name="previous_marks"
+               step="0.1" min="0" max="100" required>
+
+        <label>Assignments</label>
+        <input type="number" name="assignments"
+               min="0" max ="10" step="1" required>
+
+        <label>Internal Marks</label>
+        <input type="number" name="internal_marks"
+               step="0.1" min="0" max="20" required>
+
+        <button type="submit">
+            Predict Final Marks
+        </button>
+
+        <button type="reset" class="reset-button">Clear Form</button>
+    </form>
+ {% if prediction is not none %}
+    <div class="result">
+        <h2>Predicted Marks</h2>
+        <p>{{ prediction }} / 100</p>
+        <h3>Performance: {{ performance }}</h3>
+        <p>{{ recommendation }}</p>
+    </div>
+
+  <div class="input-summary">
+    <h3>Student Information</h3>
+
+    <p>Study Hours: {{ study_hours }}</p>
+    <p>Attendance: {{ attendance }}%</p>
+    <p>Previous Marks: {{ previous_marks }}</p>
+    <p>Assignments: {{ assignments }}</p>
+    <p>Internal Marks: {{ internal_marks }}</p>
+</div>
+
+<div class="model-info">
+    <h3>How the Model Uses Your Data</h3>
+
+    <p>Study Hours: {{ "%.2f"|format(coefficients["study_hours"]) }}</p>
+    <p>Attendance: {{ "%.2f"|format(coefficients["attendance"]) }}</p>
+    <p>Previous Marks: {{ "%.2f"|format(coefficients["previous_marks"]) }}</p>
+    <p>Assignments: {{ "%.2f"|format(coefficients["assignments"]) }}</p>
+    <p>Internal Marks: {{ "%.2f"|format(coefficients["internal_marks"]) }}</p>
+</div>
+
+<div class="model-details">
+    <h3>Model Information</h3>
+
+    <p>Model: Linear Regression</p>
+    <p>Test MAE: {{ "%.2f"|format(mae) }} marks</p>
+</div>
+
+<div class="model-comparison">
+    <h3>Model Comparison</h3>
+
+    <p>Linear Regression MAE:
+        {{ "%.2f"|format(mae) }} marks
+    </p>
+
+    <p>Random Forest MAE:
+        {{ "%.2f"|format(rf_mae) }} marks
+    </p>
+</div>
+
+{% endif %}
+
+</div>
+
+</body>
+</html>
