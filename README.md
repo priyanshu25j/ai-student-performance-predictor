@@ -1,5 +1,12 @@
 # AI Student Performance Predictor
 
+
+![Python](https://img.shields.io/badge/Python-3.x-blue)
+![Flask](https://img.shields.io/badge/Flask-Web%20App-black)
+![Scikit--learn](https://img.shields.io/badge/Scikit--learn-Machine%20Learning-orange)
+![License](https://img.shields.io/badge/License-MIT-green)
+
+
 ## Overview
 AI Student Performance Predictor is a machine learning web application
 that predicts a student's final marks based on academic inputs such as
